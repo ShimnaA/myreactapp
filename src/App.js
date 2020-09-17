@@ -5,15 +5,30 @@ import Person1 from './Person/Person'
 import Teacher from './Person/Teacher'
 
 class App extends Component {
+  state = {
+    persons: [
+              {name: 'lily', age: 24 },
+              {name: 'Rose', age: 12}
+          ]
+  }
+  changeNameHandler = () => {
+   //Dont use this this.state.persons[0].name = 'shimna';
+   this.setState({
+      persons: [
+        {name: 'raja', age: 28 },
+        {name: 'rani', age: 11}
+    ]}
+   );
+  }
+
   render() {
     return (
       <div className="App">
         <h1> My react project, </h1>
         <p> One more sentence ... </p>
-        <Person1 name="lily" age="14"></Person1>
-        <Person1 name="liies" age="16"> This is my place </Person1>
-        
-        <Teacher />
+        <button onClick={this.changeNameHandler}> ChangeName</button>
+        <Person1 name={this.state.persons[0].name} age={this.state.persons[0].age}></Person1>
+        <Person1 name={this.state.persons[1].name} age={this.state.persons[1].age}> Beautiful!!! </Person1>
        
       </div>
     );
