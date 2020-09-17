@@ -1,1 +1,3 @@
-"# myreactapp" 
+myreactapp
+
+A simple React Application
