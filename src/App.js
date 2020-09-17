@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import './App.css';
+import './Person/Person.css'
 import Person1 from './Person/Person'
 import Teacher from './Person/Teacher'
 
@@ -32,11 +33,21 @@ class App extends Component {
    }
 
   render() {
+    const btnstyle={
+      backgroundColor: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '8px',
+      cursor: 'pointer'
+    }
+
     return (
       <div className="App">
         <h1> My react project, </h1>
         <p> One more sentence ... </p>
-        <button onClick={() => this.changeNameHandler('hello')}> ChangeName</button>
+        <button 
+        style={btnstyle}
+        onClick={() => this.changeNameHandler('hello')}> ChangeName</button>
         <Person1 
         name={this.state.persons[0].name} age={this.state.persons[0].age}>
         </Person1>
