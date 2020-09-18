@@ -3,17 +3,18 @@ import React, { Component } from 'react';
 import './App.css';
 import './Person/Person.css'
 import Person1 from './Person/Person'
-import Teacher from './Person/Teacher'
+
 
 class App extends Component {
   state = {
     persons: [
               {name: 'lily', age: 24 },
               {name: 'Rose', age: 12}
-          ]
+          ],
+    showPersons: false
   }
   changeNameHandler = (newname) => {
-   //Dont use this this.state.persons[0].name = 'shimna';
+   
    this.setState({
       persons: [
         {name: newname, age: 28 },
@@ -23,13 +24,20 @@ class App extends Component {
   }
 
   changingNameHandler = (event) => {
-    //Dont use this this.state.persons[0].name = 'shimna';
+    
     this.setState({
        persons: [
          {name: "raja", age: 28 },
          {name: event.target.value, age: 11}
      ]}
     );
+   }
+
+   toggleNameHandler = () => {
+      const currShowPersons = this.state.showPersons;
+      this.setState({
+        showPersons: !currShowPersons}
+      );
    }
 
   render() {
@@ -47,18 +55,22 @@ class App extends Component {
         <p> One more sentence ... </p>
         <button 
         style={btnstyle}
-        onClick={() => this.changeNameHandler('hello')}> ChangeName</button>
-        <Person1 
-        name={this.state.persons[0].name} age={this.state.persons[0].age}>
-        </Person1>
-        <Person1 
-        name={this.state.persons[1].name} age={this.state.persons[1].age}
-        click1={this.changeNameHandler.bind(this,'Shimna')}
-        change={this.changingNameHandler} 
-        > 
-        Beautiful!!! 
-        </Person1>
-       
+        onClick={this.toggleNameHandler}> ToggleName</button>
+        {
+          this.state.showPersons ?
+          <div>
+                <Person1 
+                name={this.state.persons[0].name} age={this.state.persons[0].age}>
+                </Person1>
+                <Person1 
+                name={this.state.persons[1].name} age={this.state.persons[1].age}
+                click1={this.changeNameHandler.bind(this,'Shimna')}
+                change={this.changingNameHandler} 
+                > 
+                Beautiful!!! 
+                </Person1>
+          </div> : null
+       }
       </div>
     );
    // return React.createElement('div',{className: 'App'}, React.createElement('h1', null,'This is a react app'));
@@ -66,7 +78,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-
-
