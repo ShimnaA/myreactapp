@@ -8,30 +8,33 @@ import Person1 from './Person/Person'
 class App extends Component {
   state = {
     persons: [
-              {name: 'lily', age: 24 },
-              {name: 'Rose', age: 12}
+              {id: 'p1', name: 'lily', age: 24 },
+              {id: 'p2', name: 'Rose', age: 12}
           ],
     showPersons: false
   }
-  changeNameHandler = (newname) => {
-   
-   this.setState({
-      persons: [
-        {name: newname, age: 28 },
-        {name: 'rani', age: 11}
-    ]}
-   );
+  deleteNameHandler = (nameIndex) => {
+
+    //const persons = this.state.persons;
+    //const persons = this.state.persons.slice();
+    const persons = [...this.state.persons];
+    persons.splice(nameIndex, 1);
+    this.setState({persons: persons});
   }
 
-  changingNameHandler = (event) => {
-    
-    this.setState({
-       persons: [
-         {name: "raja", age: 28 },
-         {name: event.target.value, age: 11}
-     ]}
-    );
+ 
+   changeTextHandler = ( event, id ) => {
+      const personIndex =  this.state.persons.findIndex(p => {
+        return p.id === id;
+      });
+      const person =  { ...this.state.persons[personIndex] };
+      person.name = event.target.value;
+
+      const persons =  [ ...this.state.persons ];
+      persons[personIndex] =  person;
+      this.setState( {persons: persons} );
    }
+
 
    toggleNameHandler = () => {
       const currShowPersons = this.state.showPersons;
@@ -51,10 +54,15 @@ class App extends Component {
     let persons = null;
     if (this.state.showPersons){
       persons = ( <div>
-        {this.state.persons.map(person => {
-        return <Person1 name={person.name} age={person.age} />
-
-      })}
+        {this.state.persons.map((person, index) => {
+          return <Person1 
+                  click1={this.deleteNameHandler.bind(this, index)}
+                  change={(event) => this.changeTextHandler(event, person.id)}
+                  name={person.name} 
+                  age={person.age}
+                  key={person.id} 
+                  />
+          })}
       </div>);
     }
 
@@ -68,7 +76,6 @@ class App extends Component {
         {persons}
       </div>
     );
-   // return React.createElement('div',{className: 'App'}, React.createElement('h1', null,'This is a react app'));
   }
 }
 
