@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 
 import './App.css';
-import './Person/Person.css'
-import Person1 from './Person/Person'
+import './Person/Person.css';
+import Person1 from './Person/Person';
+import Validator from './Person/Validation';
+import Charcomponent from './Person/Charcomponent'
+
+
 
 
 class App extends Component {
@@ -11,7 +15,10 @@ class App extends Component {
               {id: 'p1', name: 'lily', age: 24 },
               {id: 'p2', name: 'Rose', age: 12}
           ],
-    showPersons: false
+    showPersons: false,
+    datalen: 0,
+    data: [],
+    usertxt: ''
   }
   deleteNameHandler = (nameIndex) => {
 
@@ -22,6 +29,11 @@ class App extends Component {
     this.setState({persons: persons});
   }
 
+  deleteDataHandler = (dataIndex) => {
+    const datas = [...this.state.data];
+    datas[dataIndex] = "kk";
+    this.setState({data: datas});
+  }
  
    changeTextHandler = ( event, id ) => {
       const personIndex =  this.state.persons.findIndex(p => {
@@ -35,6 +47,15 @@ class App extends Component {
       this.setState( {persons: persons} );
    }
 
+   changeTextLenHandler = (event) => {
+      const tmpdata =  event.target.value;
+      this.setState({
+        datalen: tmpdata.length,
+        data: tmpdata
+      }
+      );
+ }
+
 
    toggleNameHandler = () => {
       const currShowPersons = this.state.showPersons;
@@ -44,6 +65,13 @@ class App extends Component {
    }
 
   render() {
+    const chardata = this.state.usertxt.split('').map((dat) => {
+      return <Charcomponent 
+              chardata={dat} 
+              
+              />
+            });
+
     const btnstyle={
       backgroundColor: 'white',
       font: 'inherit',
@@ -66,14 +94,21 @@ class App extends Component {
       </div>);
     }
 
+      
+
     return (
       <div className="App">
         <h1> My react project, </h1>
         <p> One more sentence ... </p>
+        <input type="text" onChange={this.changeTextLenHandler} value={this.state.usertxt} />
+        <p>The length of the text data is {this.state.datalen}</p>
+        <Validator lendata={this.state.datalen} />
+        {chardata}
         <button 
         style={btnstyle}
         onClick={this.toggleNameHandler}> ToggleName</button>
         {persons}
+        <p> The data is displayed as {this.state.data}</p>
       </div>
     );
   }
