@@ -9,8 +9,8 @@ const charcomponent = (props) => {
 
     };
     return(
-        <div style={style}>
-            {props.chardata}
+        <div style={style} onClick={props.delhandle}>
+            {props.chardata1} 
         </div>
     );
 };
