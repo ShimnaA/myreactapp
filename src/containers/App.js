@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import Person from './Person/Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary'
-
-
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit'
 
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor');
+  }
+
   state = {
     persons: [
       {id:'p1', name: 'Max', age: 28 },
@@ -16,6 +19,24 @@ class App extends Component {
     ],
     otherState: 'some other value',
     showPersons: false
+  }
+
+  static getDerivedStateFromProps(props, state){
+
+    console.log("App.js GetderivedStaateFrom props")
+    return props;
+  }
+
+  componentDidMount(){
+    console.log("App.js componentDidMount");
+  }
+
+  shouldComponentUpdate(){
+    console.log("App.js shouldComponentUpdate");
+    return true;
+  }
+  componentDidUpdate(){
+    console.log("App.js componentDidUpdate");
   }
 
   switchNameHandler = ( newName ) => {
@@ -63,56 +84,32 @@ class App extends Component {
   }
 
   render () {
-    const style = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    };
     
-
+    console.log("App.js render")
     let persons = null;
 
     if ( this.state.showPersons ) {
       persons = (
         <div>
-          {this.state.persons.map((per, index) => {
-             return <ErrorBoundary  key={per.id}>
-             <Person 
-              name={per.name}
-              age={per.age}
-              change={(event) => this.personChangeHandler(event, per.id)}
-              click1={() => this.deletePersonHandler(index)}/></ErrorBoundary>
-          })}  
+          <Persons persons={this.state.persons} 
+          changed={this.personChangeHandler} 
+          clicked={this.deletePersonHandler}/>
         </div>
       );
-      style.backgroundColor = 'red';
+     // style.backgroundColor = 'red';
     }
-
-    //let classes = ['red', 'bold'].join(' ');  //returns a string separted by space "red bold"
-    const classes = [];
-    if (this.state.persons.length <=2 ){
-      classes.push('red')  //classes=['red]
-    }
-    if (this.state.persons.length <=1 ){
-      classes.push('bold')  //classes=[red,'bold]
-    }
-    
-    
-
+   
     return (
       <div className="App">
-        <h1>Hi, I'm a React App</h1>
-        <p className={classes.join(' ')}>This is really working!</p>
-        <button style={style}
-          onClick={this.togglePersonsHandler}>
-          Toggle Persons </button>
+
+        <Cockpit persons={this.state.persons}
+        showPersons={this.state.showPersons}
+        clicked={this.togglePersonsHandler}/>
+
         {persons}
       </div>
     );
-    // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
+    
   }
 }
 
