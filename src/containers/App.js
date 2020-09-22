@@ -18,7 +18,8 @@ class App extends Component {
       {id:'p3', name: 'Stephanie', age: 26 }
     ],
     otherState: 'some other value',
-    showPersons: false
+    showPersons: false,
+    showbutton: true
   }
 
   static getDerivedStateFromProps(props, state){
@@ -82,6 +83,9 @@ class App extends Component {
       pers.splice(index,1);
       this.setState({persons: pers});
   }
+  deletecockpitHandler = () =>{
+    this.setState({showbutton: false})
+  }
 
   render () {
     
@@ -101,11 +105,19 @@ class App extends Component {
    
     return (
       <div className="App">
-
+        
+        <button
+          onClick={() =>{
+            this.setState({showbutton: false});
+        }}>
+          Delete Cockpit
+          </button>
+       {this.state.showbutton ?
         <Cockpit persons={this.state.persons}
         showPersons={this.state.showPersons}
         clicked={this.togglePersonsHandler}/>
-
+        : null
+      }
         {persons}
       </div>
     );

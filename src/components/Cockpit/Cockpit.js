@@ -4,9 +4,14 @@ import  './Cockpit.css';
 
 const Cockpit  = props  => {
     useEffect(()=>{
-        console.log("Cockpit useEffect")
-        
-      }
+        console.log('Cockpit useEffect')
+        setTimeout(() => {
+          alert('Saved to server');
+        }, 1000);
+        return () => {
+          console.log("cockpit.js cleanup work");
+        }
+      },[props.persons]
     );
   
     const assignedClasses = [];
