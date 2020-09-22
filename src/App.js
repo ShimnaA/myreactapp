@@ -1,26 +1,11 @@
-
-//import Validateinput from './Person/Validation';
-//import CharComp from './Person/Charcomponent';
-//import Blog from './Person/Blog'
-
 import React, { Component } from 'react';
 import './App.css';
-import styled from 'styled-components';
+
 import Person from './Person/Person';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary'
 
-const StyledButton = styled.button`
-  background-color: ${props => props.all ? 'red' : 'green'};
-  color: white;
-  font: inherit;
-  border: 1px solid blue;
-  padding: 8px;
-  cursor: pointer;
-  &:hover: {
-    background-color: lightgreen;
-    color: black;
-  }
 
-  `;
+
 
 class App extends Component {
   state = {
@@ -94,11 +79,12 @@ class App extends Component {
       persons = (
         <div>
           {this.state.persons.map((per, index) => {
-             return <Person key={per.id}
+             return <ErrorBoundary  key={per.id}>
+             <Person 
               name={per.name}
               age={per.age}
               change={(event) => this.personChangeHandler(event, per.id)}
-              click1={() => this.deletePersonHandler(index)}/>
+              click1={() => this.deletePersonHandler(index)}/></ErrorBoundary>
           })}  
         </div>
       );
@@ -120,9 +106,9 @@ class App extends Component {
       <div className="App">
         <h1>Hi, I'm a React App</h1>
         <p className={classes.join(' ')}>This is really working!</p>
-        <StyledButton all={this.state.showPersons }
+        <button style={style}
           onClick={this.togglePersonsHandler}>
-          Toggle Persons </StyledButton>
+          Toggle Persons </button>
         {persons}
       </div>
     );
