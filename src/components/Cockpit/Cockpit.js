@@ -5,10 +5,11 @@ import  './Cockpit.css';
 const Cockpit  = props  => {
     useEffect(()=>{
         console.log('Cockpit useEffect')
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           alert('Saved to server');
         }, 1000);
         return () => {
+          clearTimeout(timer);
           console.log("cockpit.js cleanup work");
         }
       },[props.persons]
@@ -26,7 +27,7 @@ const Cockpit  = props  => {
     if ( props.persons.length <= 1 ) {
       assignedClasses.push( 'bold' ); // classes = ['red', 'bold']
     }
-
+    console.log("cockpit rendering")
     return (
         <div className="Cockpit">
             <h1>{props.title}</h1>
@@ -38,4 +39,5 @@ const Cockpit  = props  => {
     );
 };
 
-export default Cockpit ;
+//export default React.memo(Cockpit);
+export default Cockpit;
