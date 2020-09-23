@@ -3,7 +3,7 @@ import './App.css';
 
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit'
-import WithClass from '../hoc/WithClass';
+import AuthContext from '../context/auth-context'
 
 
 class App extends Component {
@@ -21,8 +21,11 @@ class App extends Component {
     otherState: 'some other value',
     showPersons: false,
     showbutton: true,
-    changeCounter: 0
+    changeCounter: 0,
+    isauthenticated: false
   }
+
+  static contextType = AuthContext;
 
   static getDerivedStateFromProps(props, state){
 
@@ -32,6 +35,7 @@ class App extends Component {
 
   componentDidMount(){
     console.log("App.js componentDidMount");
+    console.log(this.context.authenticated);
   }
 
   shouldComponentUpdate(){
@@ -94,6 +98,9 @@ class App extends Component {
   deletecockpitHandler = () =>{
     this.setState({showbutton: false})
   }
+  loginHandler = () =>{
+    this.setState({isauthenticated: true})
+  }
 
   render () {
     
@@ -105,31 +112,45 @@ class App extends Component {
         <div>
           <Persons persons={this.state.persons} 
           changed={this.personChangeHandler} 
-          clicked={this.deletePersonHandler}/>
+          clicked={this.deletePersonHandler}
+          isauth={this.state.isauthenticated}/>
         </div>
       );
     
     }
+    let logindata = null;
+    if (this.state.isauthenticated){
+      logindata = <div> Loooged</div>
+    }else{
+      logindata = <div> Not Loooged</div>
+    }
    
     return (
-     // <div className="App">
-        <WithClass classes="App">
-              <button
+      <div className="App">
+        
+            <button
                 onClick={() =>{
                   this.setState({showbutton: false});
               }}>
                 Delete Cockpit
-                </button>
-            {this.state.showbutton ?
-              <Cockpit persons={this.state.persons}
-              showPersons={this.state.showPersons}
-              clicked={this.togglePersonsHandler}/>
-              : null
-            }
-              {persons}
-        </WithClass>
-
-      //</div>
+            </button>
+            <AuthContext.Provider value={{
+                      authenticated: this.state.isauthenticated,
+                      login: this.loginHandler
+                    }}
+            >
+                {this.state.showbutton ?
+                  (<Cockpit persons={this.state.persons}
+                  showPersons={this.state.showPersons}
+                  clicked={this.togglePersonsHandler}
+                  />)
+                  : null
+                }
+                  {persons}
+              </AuthContext.Provider>
+              {logindata}
+       
+      </div>
     );
     
   }
